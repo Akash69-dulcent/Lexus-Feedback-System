@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Please rate your service</title>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Lexus" class="logo" />
+        
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Form with correct action pointing to home route -->
+        <form action="{{ url_for('home') }}" method="POST">
+            <div class="form-group">
+                <h3>Customer Name</h3>
+                <input
+                    type="text"
+                    name="customer"
+                    placeholder="Name of vehicle owner"
+                    required
+                />
+            </div>
+            
+            <div class="form-group">
+                <h3>Dealer</h3>
+                <select name="dealer" required>
+                    <option value="">Select Dealer</option>
+                    <option value="Tom Smith">Tom Smith</option>
+                    <option value="Karen Swanson">Karen Swanson</option>
+                    <option value="Jim Johnson">Jim Johnson</option>
+                    <option value="Shauna Gifford">Shauna Gifford</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <h3>Please rate your dealer</h3>
+                <div class="rating-group">
+                    <input type="radio" name="rating" value="1" id="rating1" />
+                    <label for="rating1">1</label>
+                    <input type="radio" name="rating" value="2" id="rating2" />
+                    <label for="rating2">2</label>
+                    <input type="radio" name="rating" value="3" id="rating3" />
+                    <label for="rating3">3</label>
+                    <input type="radio" name="rating" value="4" id="rating4" />
+                    <label for="rating4">4</label>
+                    <input type="radio" name="rating" value="5" id="rating5" />
+                    <label for="rating5">5</label>
+                    <input type="radio" name="rating" value="6" id="rating6" />
+                    <label for="rating6">6</label>
+                    <input type="radio" name="rating" value="7" id="rating7" />
+                    <label for="rating7">7</label>
+                    <input type="radio" name="rating" value="8" id="rating8" />
+                    <label for="rating8">8</label>
+                    <input type="radio" name="rating" value="9" id="rating9" />
+                    <label for="rating9">9</label>
+                    <input type="radio" name="rating" value="10" id="rating10" checked />
+                    <label for="rating10">10</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <h3>Comments about your experience</h3>
+                <textarea
+                    name="comments"
+                    cols="30"
+                    rows="10"
+                    placeholder="Tell us what you liked and/or did not like"
+                    required
+                ></textarea>
+            </div>
+            
+            <input type="submit" value="Submit" class="btn" />
+        </form>
+        
+        <!-- Optional: Display submitted data -->
+        {% if lexis %}
+            <div class="submitted-data">
+                <h3>Recent Submissions</h3>
+                <div class="submissions">
+                    {% for entry in lexis[:5] %}  <!-- Show only last 5 entries -->
+                        <div class="submission">
+                            <p><strong>Customer:</strong> {{ entry[1] }}</p>
+                            <p><strong>Dealer:</strong> {{ entry[2] }}</p>
+                            <p><strong>Rating:</strong> {{ entry[3] }}/10</p>
+                            <p><strong>Comments:</strong> {{ entry[4] }}</p>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
